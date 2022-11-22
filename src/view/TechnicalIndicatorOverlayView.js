@@ -199,11 +199,16 @@ export default class TechnicalIndicatorOverlayView extends View {
       renderText(this._ctx, textColor, labelX, labelY, calcParamText)
       labelX += (calcParamTextWidth + textMarginRight)
     }
+    let yAxisInsideWidth = 0
+    const styleOptions = this._chartStore.styleOptions()
+    if (true === styleOptions.yAxis.inside && 'right' === styleOptions.yAxis.position) {
+      yAxisInsideWidth = this._yAxis.getSelfWidth()
+    }
     tooltipData.values.forEach(v => {
       labelX += textMarginLeft
       const text = `${v.title}${v.value}`
       const textWidth = calcTextWidth(this._ctx, text)
-      if (labelX + textWidth > this._width) {
+      if (labelX + textWidth > this._width - yAxisInsideWidth) {
         labelX = textMarginLeft
         tooltipHeight += (textSize + 1)
         labelY += (textSize + 1)

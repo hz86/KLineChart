@@ -110,6 +110,11 @@ export default class CandleOverlayView extends TechnicalIndicatorOverlayView {
     let labelX = textMarginLeft
     let labelY = candleTooltipOptions.text.marginTop
     let tooltipHeight = textSize
+    let yAxisInsideWidth = 0
+    const styleOptions = this._chartStore.styleOptions()
+    if (true === styleOptions.yAxis.inside && 'right' === styleOptions.yAxis.position) {
+      yAxisInsideWidth = this._yAxis.getSelfWidth()
+    }
     labels.forEach((label, i) => {
       const labelWidth = calcTextWidth(this._ctx, label)
       const value = values[i] || candleTooltipOptions.defaultValue
@@ -123,7 +128,7 @@ export default class CandleOverlayView extends TechnicalIndicatorOverlayView {
         valueText = value
       }
       const textWidth = calcTextWidth(this._ctx, valueText)
-      if (labelX + labelWidth + textWidth > this._width) {
+      if (labelX + labelWidth + textWidth > this._width - yAxisInsideWidth) {
         labelX = textMarginLeft
         tooltipHeight += (textSize + 1)
         labelY += (textSize + 1)
